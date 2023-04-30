@@ -7,13 +7,13 @@ Um das Projekt mit Maven zu starten, braucht es den mvnw (Maven-Wrapper). Dafür
 .\mvnw quarkus:dev
 ```
 
-Im IntelliJ müssen folgende Plugins installiert werden:
+Im IntelliJ müssen folgende Plugins installiert werden:<br>
 ![intellij-quarkus-plugins.png](readme-images%2Fintellij-quarkus-plugins.png)
 
 Danach wird automatisch diese Runtime-Config angelegt, über welche das Projekt gestartet werden kann:
 ![intellij-quarkus-runtime-config.png](readme-images%2Fintellij-quarkus-runtime-config.png)
 
-Das Projekt kann dann mit diesen Buttons gestartet oder gedebugged werden:
+Das Projekt kann dann mit diesen Buttons gestartet oder gedebugged werden:<br>
 ![intellij-start.png](readme-images%2Fintellij-start.png)
 
 ## Testen des Projekts
