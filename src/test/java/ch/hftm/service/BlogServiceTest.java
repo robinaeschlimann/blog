@@ -1,6 +1,7 @@
 package ch.hftm.service;
 
 import ch.hftm.model.Blog;
+import ch.hftm.model.User;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,8 @@ public class BlogServiceTest {
     @Test
     void listingAndAddingBlogs() {
         // Arrange
-        Blog blog = new Blog("Testing Blog", "This is my testing blog");
+        User user = new User(1, "Aeschlimann", "Robin", "robinaeschlimann");
+        Blog blog = Blog.builder().title("Testing Blog").description("This is my testing blog").user(user).build();
         int blogsBefore;
         List<Blog> blogs;
 
