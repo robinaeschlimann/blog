@@ -15,10 +15,14 @@ public class BlogServiceTest {
     @Inject
     BlogService blogService;
 
+    @Inject
+    UserService userService;
+
     @Test
     void listingAndAddingBlogs() {
         // Arrange
-        User user = new User(1, "Aeschlimann", "Robin", "robinaeschlimann");
+        User user = User.builder().firstname("Robin").lastname("Aeschlimann").username("robinaeschlimann").build();
+        userService.addUser(user);
         Blog blog = Blog.builder().title("Testing Blog").description("This is my testing blog").user(user).build();
         int blogsBefore;
         List<Blog> blogs;
@@ -30,6 +34,7 @@ public class BlogServiceTest {
 
         // Assert
         assertEquals(blogsBefore + 1, blogs.size());
+        assertNotNull( blogs.get(blogs.size()-1).getUser() );
         assertEquals(blog, blogs.get(blogs.size() - 1));
     }
 }
