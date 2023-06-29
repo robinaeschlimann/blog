@@ -18,7 +18,7 @@ public class Blog {
     private String title;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "USERID", nullable = false)
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "USERID", nullable = false)
+//    private User user;
 }

@@ -42,9 +42,21 @@ public class BlogService {
         blogRepository.persist( blogs.stream() );
     }
 
-    public void searchBlogForTitle( String searchText ) {
-        logger.info( "Searching blogs with title " + searchText );
+    @Transactional
+    public void updateBlog( Blog blog )
+    {
+        logger.info( "Updating blog with id: " + blog.getId() );
+        var dbBlog = blogRepository.findById( blog.getId() );
 
-        blogRepository.find( "SELECT b FROM blog b WHERE title LIKE " );
+        dbBlog.setTitle( blog.getTitle() );
+        dbBlog.setDescription( blog.getDescription() );
+        blogRepository.persist( dbBlog );
+    }
+
+    public List<Blog> findBlogs( String searchString )
+    {
+        logger.info( "Searching for blogs with search string: " + searchString );
+
+        return List.of();
     }
 }
