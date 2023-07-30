@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,6 +26,10 @@ public class Blog {
     @NotNull
     @Size(min = 3, max = 1000)
     private String description;
+
+    @OneToMany
+    @JoinColumn(name = "BLOGID", nullable = false)
+    private List<Comment> comments;
 
 //    @ManyToOne
 //    @JoinColumn(name = "USERID", nullable = false)
