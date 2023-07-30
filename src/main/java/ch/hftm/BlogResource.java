@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestQuery;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,8 +21,17 @@ public class BlogResource
 
     @GET
     @Produces( MediaType.APPLICATION_JSON )
-    public List<BlogDto> getBlogs() {
-        return this.service.getBlogs();
+    public List<BlogDto> getBlogs(@RestQuery Integer limit)
+    {
+        var blogs = this.service.getBlogs();
+
+        if (limit != null && limit > 0) {
+            return blogs
+                    .stream()
+                    .limit(limit)
+                    .toList();
+        }
+        return blogs;
     }
 
     @POST
