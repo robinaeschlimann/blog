@@ -1,17 +1,15 @@
 package ch.hftm.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import ch.hftm.control.dto.BlogDto;
 import ch.hftm.model.Blog;
 import ch.hftm.repository.BlogRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.jboss.logging.Logger;
 
-import jakarta.enterprise.context.Dependent;
-import jakarta.inject.Inject;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Dependent
 public class BlogService {
@@ -21,20 +19,30 @@ public class BlogService {
     @Inject
     Logger logger;
 
-    public List<Blog> getBlogs() {
+    public List<BlogDto> getBlogs() {
         var blogs = blogRepository.listAll();
         logger.info("Returning " + blogs.size() + " blogs");
-        return blogs;
+        return blogs.stream()
+                .map(BlogDto::toDto)
+                .toList();
     }
 
     @Transactional
-    public void addBlog(Blog blog) {
-        logger.info("Adding blog " + blog.getTitle());
+    public void addBlog(BlogDto blogDto) {
+        logger.info("Adding blog " + blogDto.getTitle());
+
+        var blog = BlogDto.toBlog( blogDto );
+
         blogRepository.persist(blog);
     }
 
     @Transactional
-    public void addBlogs( List<Blog> blogs ) {
+    public void addBlogs( List<BlogDto> blogDtos ) {
+
+        var blogs = blogDtos.stream()
+                .map( BlogDto::toBlog )
+                .toList();
+
         logger.info( "Adding blogs: " + blogs.stream()
                 .map( Blog::getTitle )
                 .collect(Collectors.joining(", ") ) );
@@ -43,7 +51,7 @@ public class BlogService {
     }
 
     @Transactional
-    public void updateBlog( Blog blog )
+    public void updateBlog( BlogDto blog )
     {
         logger.info( "Updating blog with id: " + blog.getId() );
         var dbBlog = blogRepository.findById( blog.getId() );
@@ -51,12 +59,5 @@ public class BlogService {
         dbBlog.setTitle( blog.getTitle() );
         dbBlog.setDescription( blog.getDescription() );
         blogRepository.persist( dbBlog );
-    }
-
-    public List<Blog> findBlogs( String searchString )
-    {
-        logger.info( "Searching for blogs with search string: " + searchString );
-
-        return List.of();
     }
 }

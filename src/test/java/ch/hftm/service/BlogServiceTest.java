@@ -1,6 +1,6 @@
 package ch.hftm.service;
 
-import ch.hftm.model.Blog;
+import ch.hftm.control.dto.BlogDto;
 import ch.hftm.model.User;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class BlogServiceTest {
@@ -23,13 +23,13 @@ public class BlogServiceTest {
         // Arrange
         User user = User.builder().firstname("Robin").lastname("Aeschlimann").username("robinaeschlimann").build();
         userService.addUser(user);
-        Blog blog = Blog.builder()
+        BlogDto blog = BlogDto.builder()
                 .title("Testing Blog")
                 .description("This is my testing blog")
                 //.user(user)
                 .build();
         int blogsBefore;
-        List<Blog> blogs;
+        List<BlogDto> blogs;
 
         // Act
         blogsBefore = blogService.getBlogs().size();
