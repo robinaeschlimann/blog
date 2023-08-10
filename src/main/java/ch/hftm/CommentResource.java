@@ -7,6 +7,8 @@ import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,6 +23,7 @@ public class CommentResource
     @GET
     @Path( "/{id}" )
     @Produces( "application/json" )
+    @Operation( description = "Get all comments for a blog")
     public List<CommentDto> getComments(@PathParam("id") long blogId )
     {
         return service.getComments( blogId );
@@ -29,6 +32,8 @@ public class CommentResource
     @POST
     @Path( "/{id}" )
     @Produces( "application/json" )
+    @Operation( description = "Add a new comment to a blog")
+    @RequestBody( description = "The comment to add", required = true)
     public Response addComment(@PathParam("id") long blogId, @Valid CommentDto comment ) throws URISyntaxException {
         service.addComment( blogId, comment );
 
