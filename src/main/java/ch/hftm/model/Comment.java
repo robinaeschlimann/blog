@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class Comment
 {
     @Id
+    @GeneratedValue
+    @Column(name = "COMMENTID")
     private long id;
     private String text;
 }
