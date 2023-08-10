@@ -1,5 +1,7 @@
 # blog
 
+In diesem Projekt können Blog-Posts erstellt und geladen werden. Zu den Blog-Posts gehören natürlich auch die Kommentare, welche zu einem Blog erfasst werden können.
+
 ## Starten des Projekts
 Das Projekt kann entweder mit Maven oder mit IntelliJ gestartet werden.
 Um das Projekt mit Maven zu starten, braucht es den mvnw (Maven-Wrapper). Dafür muss man in der Konsole ins Projekt navigieren und danach den folgenden Befehl ausführen:
@@ -21,3 +23,14 @@ Sobald das Projekt gestartet wurde, wird in der Konsole folgende Meldung angezei
 ![quarkus-tests.png](readme-images%2Fquarkus-tests.png)
 
 Mit der Eingabe von "r" werden die Tests ausgeführt. Das Resultat kann dann mit "o" angesehen werden.
+
+## Probleme
+Aktuell werden neu angelegte Kommentare nicht auf dem Blog gespeichert. Ich habe einiges versucht und mit Google versucht das Problem zu lösen. Allerdings ohne Erfolg.
+
+Der Post-Request für das Erstellen eines Kommentars wird richtig abgesetzt und die richtigen Methoden werden auch aufgerufen. Wenn ich dann aber die Kommentare zu einem Post abfrage, erhalte ich immer eine leere Liste zurück.
+
+@Simeon: Hast du vielleicht eine Idee woran das liegen könnte? Die wichtigsten Klassen und Methoden:
+- CommentService#addComment
+- CommentService#getComments
+- Blog.java
+- Comment.java
