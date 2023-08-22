@@ -28,7 +28,8 @@ Mit der Eingabe von "r" werden die Tests ausgeführt. Das Resultat kann dann mit
 
 Die Methode für das Laden von Blogs und Kommentaren benötigt keine Berechtigung. Für die anderen Funktionen braucht es eine bestimmte Rolle:
 
-| Funktion | Rolle | Beschränkung |
-| Blog erstellen | User & create-blog | - |
-| Blog bearbeiten | User & create-blog | Der Benutzer kann nur seine eigenen Blogs bearbeiten |
-| Kommentar schreiben | User | - |
+| Funktion           | Rolle           | Beschränkung                                   |
+|-------------------|-----------------|-----------------------------------------------|
+| Blog erstellen    | User & create-blog | -                                             |
+| Blog bearbeiten   | User & create-blog | Der Benutzer kann nur seine eigenen Blogs bearbeiten |
+| Kommentar schreiben | User           | -                                             |
