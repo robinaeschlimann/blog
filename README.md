@@ -24,13 +24,11 @@ Sobald das Projekt gestartet wurde, wird in der Konsole folgende Meldung angezei
 
 Mit der Eingabe von "r" werden die Tests ausgeführt. Das Resultat kann dann mit "o" angesehen werden.
 
-## Probleme
-Aktuell werden neu angelegte Kommentare nicht auf dem Blog gespeichert. Ich habe einiges versucht und mit Google versucht das Problem zu lösen. Allerdings ohne Erfolg.
+## Berechtigungskonzept
 
-Der Post-Request für das Erstellen eines Kommentars wird richtig abgesetzt und die richtigen Methoden werden auch aufgerufen. Wenn ich dann aber die Kommentare zu einem Post abfrage, erhalte ich immer eine leere Liste zurück.
+Die Methode für das Laden von Blogs und Kommentaren benötigt keine Berechtigung. Für die anderen Funktionen braucht es eine bestimmte Rolle:
 
-@Simeon: Hast du vielleicht eine Idee woran das liegen könnte? Die wichtigsten Klassen und Methoden:
-- CommentService#addComment
-- CommentService#getComments
-- Blog.java
-- Comment.java
+| Funktion | Rolle | Beschränkung |
+| Blog erstellen | User & create-blog | - |
+| Blog bearbeiten | User & create-blog | Der Benutzer kann nur seine eigenen Blogs bearbeiten |
+| Kommentar schreiben | User | - |
