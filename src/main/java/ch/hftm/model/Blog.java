@@ -27,7 +27,7 @@ public class Blog {
     @Size(min = 3, max = 1000)
     private String description;
 
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "BLOGID", nullable = false)
     private List<Comment> comments;
 
