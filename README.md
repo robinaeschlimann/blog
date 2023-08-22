@@ -33,3 +33,10 @@ Die Methode für das Laden von Blogs und Kommentaren benötigt keine Berechtigun
 | Blog erstellen    | User & create-blog | -                                             |
 | Blog bearbeiten   | User & create-blog | Der Benutzer kann nur seine eigenen Blogs bearbeiten |
 | Kommentar schreiben | User           | -                                             |
+
+
+## Probleme
+### Kommentare werden nicht gespeichert
+Neu angelegte Kommentare werden nicht auf dem Blog gespeichert. Ich habe einiges versucht und mit Google versucht das Problem zu lösen. Allerdings ohne Erfolg.
+Der Post-Request für das Erstellen eines Kommentars wird richtig abgesetzt und die richtigen Methoden werden auch aufgerufen. Wenn ich dann aber die Kommentare zu einem Post abfrage, erhalte ich immer eine leere Liste zurück.
+</br>**Lösung**: Ich habe die Kommentare in der Datenbank nicht richtig gespeichert. Ich habe das Property `cascade` in der Annotation `@OneToMany` vergessen. Nachdem ich dieses hinzugefügt habe, hat es funktioniert.
