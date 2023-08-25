@@ -2,6 +2,8 @@ package ch.hftm;
 
 import ch.hftm.control.dto.BlogDto;
 import ch.hftm.service.BlogService;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -45,6 +47,7 @@ public class BlogResource
     @Operation( description = "Add a new blog")
     @RequestBody( description = "The blog to add", required = true )
     @APIResponse( responseCode = "201", description = "Blog created")
+    @RolesAllowed("create-blog")
     public Response addBlog( @Valid BlogDto blog ) throws URISyntaxException
     {
         this.service.addBlog( blog );
@@ -54,6 +57,7 @@ public class BlogResource
     @PUT
     @Operation( description = "Update an existing blog")
     @RequestBody( description = "The blog to update", required = true )
+    @RolesAllowed("create-blog")
     public Response updateBlog( @Valid BlogDto blog )
     {
         this.service.updateBlog( blog );

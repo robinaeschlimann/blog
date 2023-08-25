@@ -3,6 +3,7 @@ package ch.hftm;
 import ch.hftm.control.dto.CommentDto;
 import ch.hftm.model.Comment;
 import ch.hftm.service.CommentService;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -34,6 +35,7 @@ public class CommentResource
     @Produces( "application/json" )
     @Operation( description = "Add a new comment to a blog")
     @RequestBody( description = "The comment to add", required = true)
+    @Authenticated
     public Response addComment(@PathParam("id") long blogId, @Valid CommentDto comment ) throws URISyntaxException {
         service.addComment( blogId, comment );
 
