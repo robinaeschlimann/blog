@@ -18,6 +18,27 @@ Danach wird automatisch diese Runtime-Config angelegt, über welche das Projekt 
 Das Projekt kann dann mit diesen Buttons gestartet oder gedebugged werden:<br>
 ![intellij-start.png](readme-images%2Fintellij-start.png)
 
+### Keycloak starten und authentifizieren
+> **_WICHTIG:_**  Der Keycloak muss bereits konfiguriert sein. Konfiguration siehe: https://moodle.hftm.ch/mod/page/view.php?id=206167
+
+Für die Authentifizierung wird Keycloak verwendet. Dieser muss ebenfalls gestartet werden, damit man sich an den Endpoints authentifizieren kann. Gestartet wird er mit folgendem Befehl:
+```shell
+docker run --name keycloak --network blog-nw -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -d quay.io/keycloak/keycloak:22.0.1 start-dev
+```
+Nachdem das Projekt und der Keycloak aufgestartet ist, kann man die Seite http://localhost:8080/q/dev-v1/ aufrufen. Dort findet man folgende Übersicht:
+![quarkus-overview.png](readme-images%2Fquarkus-overview.png)
+
+Unter OpenID Connect kann man dann auf "keycloak" klicken und sich dann da einloggen. Für das Testing kann der User "robin" mit dem Passwort "Test1234" verwendet werden.
+
+Nach dem Login findet man diese Ansicht:
+![oidc-overview.png](readme-images%2Foidc-overview.png)
+
+In dieser Ansicht kann man dann auf "View Access Token" klicken und das Access Token kopieren.
+
+Auf der DEV-UI (siehe Bild oben) kann mann dann im Kasten "SmallRye OpenAPI" auf "Swagger UI" klicken. Beim Klick auf "Authorize" im Swagger UI kann dann das Access Token eingegeben werden.
+
+Nach diesem Schritt können die Requests aus dem Swagger UI inkl. Authentifizierung ausgeführt werden.
+
 ## Testen des Projekts
 Sobald das Projekt gestartet wurde, wird in der Konsole folgende Meldung angezeigt:
 ![quarkus-tests.png](readme-images%2Fquarkus-tests.png)
