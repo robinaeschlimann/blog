@@ -1,4 +1,4 @@
-# blog
+# Blog
 
 In diesem Projekt können Blog-Posts erstellt und geladen werden. Zu den Blog-Posts gehören natürlich auch die Kommentare, welche zu einem Blog erfasst werden können.
 
@@ -55,6 +55,28 @@ Die Methode für das Laden von Blogs und Kommentaren benötigt keine Berechtigun
 | Blog bearbeiten   | User & create-blog | Der Benutzer kann nur seine eigenen Blogs bearbeiten |
 | Kommentar schreiben | User           | -                                             |
 
+# Containerisierung
+Diese Applikation kann auch in einem Container laufen gelassen werden. Ein Image dafür steht auf den GitHub-Packages zur Verfügung (https://www.github.com/robinaeschlimann/packages). Mit den folgenden Schritten kann die Applikation in einem Container gestartet werden:
+
+## Docker Network erstellen
+```shell
+docker network create blog-nw
+```
+## Keycloak starten
+
+```shell
+docker run --name keycloak --network blog-nw -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -d quay.io/keycloak/keycloak:22.0.1 start-dev
+```
+
+Falls der Keycloak bereits vorhanden ist, kann dieser auch mit folgendem Befehl gestartet werden:
+```shell
+docker start keycloak
+docker network connect blog-nw keycloak
+```
+## Blog-App starten
+```shell
+docker run -itd --name blog -p 8080:8080 --network=blog-nw ghcr.io/robinaeschlimann/blog-backend-ra:latest
+```
 
 ## Probleme
 ### Kommentare werden nicht gespeichert
