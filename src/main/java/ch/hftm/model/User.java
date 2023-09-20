@@ -13,11 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
 public class User {
-    @Id
-    @GeneratedValue
-    @Column(name = "USERID")
+    //@Id
+    //@GeneratedValue
+    //@Column(name = "USERID")
     private long id;
     private String lastname;
     private String firstname;
