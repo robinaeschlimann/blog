@@ -73,6 +73,14 @@ Falls der Keycloak bereits vorhanden ist, kann dieser auch mit folgendem Befehl 
 docker start keycloak
 docker network connect blog-nw keycloak
 ```
+
+## Blog-App image erzeugen
+```shell
+./mwnw package
+docker build -f src/main/docker/Dockerfile.jvm -t ghcr.io/robinaeschlimann/blog-backend-ra:latest .
+
+```
+
 ## Blog-App starten
 ```shell
 docker run -itd --name blog -p 8080:8080 --network=blog-nw ghcr.io/robinaeschlimann/blog-backend-ra:latest
