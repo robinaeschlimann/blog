@@ -1,5 +1,6 @@
 package ch.hftm.model;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Blog {
+public class Blog extends PanacheEntityBase implements IBlog {
     @Id
     @GeneratedValue
     private long id;
@@ -26,6 +27,8 @@ public class Blog {
     @NotNull
     @Size(min = 3, max = 1000)
     private String description;
+
+    private boolean valid;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "BLOGID", nullable = false)

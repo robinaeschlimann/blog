@@ -1,6 +1,7 @@
 package ch.hftm.control.dto;
 
 import ch.hftm.model.Blog;
+import ch.hftm.model.IBlog;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BlogDto
+public class BlogDto implements IBlog
 {
     private long id;
     @NotNull @Size(min = 3, max = 50)
