@@ -2,15 +2,13 @@ package ch.hftm.service;
 
 import ch.hftm.control.dto.BlogDto;
 import ch.hftm.model.Blog;
-import ch.hftm.model.BlogMessage;
 import ch.hftm.model.IBlog;
 import ch.hftm.repository.BlogRepository;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.eclipse.microprofile.reactive.messaging.Channel;
-import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -20,6 +18,9 @@ import java.util.stream.Collectors;
 public class BlogService {
     @Inject
     BlogRepository blogRepository;
+
+    @Inject
+    SearchSession searchSession;
 
 //    @Inject
 //    @Channel("blog")
@@ -71,5 +72,16 @@ public class BlogService {
         dbBlog.setTitle( blog.getTitle() );
         dbBlog.setDescription( blog.getDescription() );
         blogRepository.persist( dbBlog );
+    }
+
+    @Transactional
+    public List<BlogDto> searchBlogs( String searchText )
+    {
+        return searchSession.search( Blog.class )
+                .where( f -> f.match().fields( "title" ).matching( searchText ) )
+                .fetchAllHits()
+                .stream()
+                .map( BlogDto::toDto )
+                .toList();
     }
 }

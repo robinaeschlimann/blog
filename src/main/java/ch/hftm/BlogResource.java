@@ -50,6 +50,16 @@ public class BlogResource
         return blogs;
     }
 
+    @GET
+    @Produces( MediaType.APPLICATION_JSON )
+    @Path( "search/{searchText}" )
+    @Operation( description = "Search for blogs by title or description")
+    @APIResponse( responseCode = "200", description = "Blogs returned")
+    public List<BlogDto> searchBlogs( @PathParam( "searchText" ) String searchText )
+    {
+        return this.service.searchBlogs( searchText );
+    }
+
     @POST
     @Produces( MediaType.APPLICATION_JSON )
     @Operation( description = "Add a new blog")

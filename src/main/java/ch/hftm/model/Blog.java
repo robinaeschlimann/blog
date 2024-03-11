@@ -1,6 +1,5 @@
 package ch.hftm.model;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import java.util.List;
 
@@ -16,12 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Blog extends PanacheEntityBase implements IBlog {
+@Indexed
+public class Blog implements IBlog {
     @Id
     @GeneratedValue
     private long id;
     @NotNull
     @Size(min = 3, max = 50)
+    @FullTextField
     private String title;
 
     @NotNull
