@@ -1,6 +1,7 @@
 package ch.hftm.service;
 
 import ch.hftm.control.dto.BlogDto;
+import ch.hftm.control.dto.BlogDtoSearchWrapper;
 import ch.hftm.model.Blog;
 import ch.hftm.model.IBlog;
 import ch.hftm.repository.BlogRepository;
@@ -75,13 +76,17 @@ public class BlogService {
     }
 
     @Transactional
-    public List<BlogDto> searchBlogs( String searchText )
+    public BlogDtoSearchWrapper searchBlogs(String searchText )
     {
-        return searchSession.search( Blog.class )
-                .where( f -> f.match().fields( "title" ).matching( searchText ) )
-                .fetchAllHits()
-                .stream()
-                .map( BlogDto::toDto )
-                .toList();
+        var searchResult = searchSession.search( Blog.class )
+                .where( f -> f.simpleQueryString().fields( "title" ).matching( searchText ) )
+                .fetch( 10 );
+
+        return BlogDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )
+                .searchText( searchText )
+                .blogs( searchResult.hits().stream()
+                        .map( BlogDto::toDto )
+                        .toList() )
+                .build();
     }
 }

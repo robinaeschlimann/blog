@@ -1,6 +1,7 @@
 package ch.hftm;
 
 import ch.hftm.control.dto.BlogDto;
+import ch.hftm.control.dto.BlogDtoSearchWrapper;
 import ch.hftm.model.BlogMessage;
 import ch.hftm.repository.BlogRepository;
 import ch.hftm.service.BlogService;
@@ -55,7 +56,7 @@ public class BlogResource
     @Path( "search/{searchText}" )
     @Operation( description = "Search for blogs by title or description")
     @APIResponse( responseCode = "200", description = "Blogs returned")
-    public List<BlogDto> searchBlogs( @PathParam( "searchText" ) String searchText )
+    public BlogDtoSearchWrapper searchBlogs(@QueryParam( "searchText" ) String searchText )
     {
         return this.service.searchBlogs( searchText );
     }

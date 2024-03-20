@@ -24,11 +24,13 @@ public class Blog implements IBlog {
     private long id;
     @NotNull
     @Size(min = 3, max = 50)
-    @FullTextField
+    @FullTextField(analyzer = "german")
     private String title;
 
     @NotNull
     @Size(min = 3, max = 1000)
+    @FullTextField(analyzer = "german")
+
     private String description;
 
     private boolean valid;
