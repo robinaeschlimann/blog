@@ -79,7 +79,11 @@ public class BlogService {
     public BlogDtoSearchWrapper searchBlogs(String searchText )
     {
         var searchResult = searchSession.search( Blog.class )
-                .where( f -> f.simpleQueryString().fields( "title" ).matching( searchText ) )
+                .where( f -> f.simpleQueryString()
+                        .field( "title" ).boost( 6.0f )
+                        .field( "description" ).boost( 1.0f )
+                        .matching( searchText ) )
+                .sort( f -> f.score().then().field( "title_sort" ) )
                 .fetch( 10 );
 
         return BlogDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )

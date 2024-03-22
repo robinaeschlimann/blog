@@ -11,14 +11,18 @@ public class AnalysisConfigurer implements ElasticsearchAnalysisConfigurer
     @Override
     public void configure(ElasticsearchAnalysisConfigurationContext context)
     {
-        context.analyzer( "german" )
-                .custom()
-                .tokenizer( "classic" )
-                .tokenFilters( "lowercase", "asciifolding", "stemmer", "autocomplete_edge_ngram" );
 
-        context.tokenFilter( "autocomplete_edge_ngram" )
+        context.analyzer( "titleAnalyzer" )
+                .custom()
+                .tokenizer( "standard" )
+                .tokenFilters( "lowercase", "asciifolding" );
+
+        /*context.tokenFilter( "autocomplete_edge_ngram" )
                 .type( "edge_ngram" )
                 .param( "min_gram", 1 )
-                .param( "max_gram", 10 );
+                .param( "max_gram", 10 );*/
+
+        context.normalizer( "sort" ).custom()
+                .tokenFilters( "lowercase", "asciifolding" );
     }
 }
