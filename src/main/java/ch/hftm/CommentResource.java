@@ -46,8 +46,8 @@ public class CommentResource
     @Path( "/search" )
     @Produces( "application/json" )
     @Operation( description = "Search for comments")
-    public CommentDtoSearchWrapper searchComments(@QueryParam("searchText") String searchText )
+    public CommentDtoSearchWrapper searchComments(@QueryParam("searchText") String searchText, @QueryParam("page") int page )
     {
-        return service.searchComments( searchText );
+        return service.searchComments( searchText, page );
     }
 }

@@ -57,14 +57,14 @@ public class CommentService
     }
 
     @Transactional
-    public CommentDtoSearchWrapper searchComments(String searchText)
+    public CommentDtoSearchWrapper searchComments(String searchText, int page)
     {
         var searchResult = searchSession.search( Comment.class )
                 .where( f -> f.simpleQueryString()
                         .field( "text" )
                         .matching( searchText ) )
                 .sort( SearchSortFactory::score )
-                .fetch( 10 );
+                .fetch( page * 10, 10 );
 
         return CommentDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )
                 .searchText( searchText )
