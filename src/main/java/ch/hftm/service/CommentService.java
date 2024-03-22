@@ -1,6 +1,9 @@
 package ch.hftm.service;
 
+import ch.hftm.control.dto.BlogDto;
+import ch.hftm.control.dto.BlogDtoSearchWrapper;
 import ch.hftm.control.dto.CommentDto;
+import ch.hftm.control.dto.CommentDtoSearchWrapper;
 import ch.hftm.model.Blog;
 import ch.hftm.model.Comment;
 import ch.hftm.repository.BlogRepository;
@@ -8,6 +11,8 @@ import ch.hftm.repository.CommentRepository;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +24,7 @@ public class CommentService
     BlogRepository blogRepository;
 
     @Inject
-    CommentRepository commentRepository;
+    SearchSession searchSession;
 
     public List<CommentDto> getComments(long blogId ) throws IllegalArgumentException
     {
@@ -49,5 +54,23 @@ public class CommentService
         blog.getComments().add(comment);
 
         blogRepository.persist(blog);
+    }
+
+    @Transactional
+    public CommentDtoSearchWrapper searchComments(String searchText)
+    {
+        var searchResult = searchSession.search( Comment.class )
+                .where( f -> f.simpleQueryString()
+                        .field( "text" )
+                        .matching( searchText ) )
+                .sort( SearchSortFactory::score )
+                .fetch( 10 );
+
+        return CommentDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )
+                .searchText( searchText )
+                .comments( searchResult.hits().stream()
+                        .map( CommentDto::toDto )
+                        .toList() )
+                .build();
     }
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
@@ -20,6 +21,6 @@ public class Comment
     @GeneratedValue
     @Column(name = "COMMENTID")
     private long id;
-    @FullTextField(analyzer = "german")
+    @FullTextField(analyzer = "german", projectable = Projectable.YES)
     private String text;
 }

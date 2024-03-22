@@ -1,6 +1,7 @@
 package ch.hftm;
 
 import ch.hftm.control.dto.CommentDto;
+import ch.hftm.control.dto.CommentDtoSearchWrapper;
 import ch.hftm.model.Comment;
 import ch.hftm.service.CommentService;
 import io.quarkus.security.Authenticated;
@@ -35,10 +36,18 @@ public class CommentResource
     @Produces( "application/json" )
     @Operation( description = "Add a new comment to a blog")
     @RequestBody( description = "The comment to add", required = true)
-    @Authenticated
     public Response addComment(@PathParam("id") long blogId, @Valid CommentDto comment ) throws URISyntaxException {
         service.addComment( blogId, comment );
 
         return Response.created( new URI( "/comments/" )).build();
+    }
+
+    @GET
+    @Path( "/search" )
+    @Produces( "application/json" )
+    @Operation( description = "Search for comments")
+    public CommentDtoSearchWrapper searchComments(@QueryParam("searchText") String searchText )
+    {
+        return service.searchComments( searchText );
     }
 }
