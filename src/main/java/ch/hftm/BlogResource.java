@@ -53,12 +53,12 @@ public class BlogResource
 
     @GET
     @Produces( MediaType.APPLICATION_JSON )
-    @Path( "search/{searchText}" )
+    @Path( "/search" )
     @Operation( description = "Search for blogs by title or description")
     @APIResponse( responseCode = "200", description = "Blogs returned")
-    public BlogDtoSearchWrapper searchBlogs(@QueryParam( "searchText" ) String searchText )
+    public BlogDtoSearchWrapper searchBlogs(@QueryParam( "searchText" ) String searchText, @QueryParam( "page" ) int page )
     {
-        return this.service.searchBlogs( searchText );
+        return this.service.searchBlogs( searchText, page );
     }
 
     @POST

@@ -20,6 +20,7 @@ import java.util.Optional;
 @Dependent
 public class CommentService
 {
+    public static final int PAGE_SIZE = 10;
     @Inject
     BlogRepository blogRepository;
 
@@ -64,7 +65,7 @@ public class CommentService
                         .field( "text" )
                         .matching( searchText ) )
                 .sort( SearchSortFactory::score )
-                .fetch( page * 10, 10 );
+                .fetch( page * PAGE_SIZE, PAGE_SIZE );
 
         return CommentDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )
                 .searchText( searchText )

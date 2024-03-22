@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Dependent
 public class BlogService {
+    public static final int PAGE_SIZE = 10;
     @Inject
     BlogRepository blogRepository;
 
@@ -76,7 +77,7 @@ public class BlogService {
     }
 
     @Transactional
-    public BlogDtoSearchWrapper searchBlogs(String searchText )
+    public BlogDtoSearchWrapper searchBlogs(String searchText, int page)
     {
         var searchResult = searchSession.search( Blog.class )
                 .where( f -> f.simpleQueryString()
@@ -84,7 +85,7 @@ public class BlogService {
                         .field( "description" ).boost( 1.0f )
                         .matching( searchText ) )
                 .sort( f -> f.score().then().field( "title_sort" ) )
-                .fetch( 10 );
+                .fetch( page * PAGE_SIZE, PAGE_SIZE);
 
         return BlogDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )
                 .searchText( searchText )
