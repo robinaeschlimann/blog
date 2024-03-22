@@ -1,7 +1,9 @@
 package ch.hftm.service;
 
 import ch.hftm.control.dto.BlogDto;
+import ch.hftm.control.dto.BlogDtoHighlight;
 import ch.hftm.control.dto.BlogDtoSearchWrapper;
+import ch.hftm.control.dto.SearchResultDto;
 import ch.hftm.model.Blog;
 import ch.hftm.model.IBlog;
 import ch.hftm.repository.BlogRepository;
@@ -93,5 +95,25 @@ public class BlogService {
                         .map( BlogDto::toDto )
                         .toList() )
                 .build();
+    }
+
+    @Transactional
+    public SearchResultDto<BlogDtoHighlight> searchBlogsWithHighlighting( String searchText, int page )
+    {
+        var searchResult = searchSession.search( Blog.class )
+                .select( BlogDtoHighlight.class )
+                .where( f -> f.simpleQueryString()
+                        .field( "title" ).boost( 6.0f )
+                        .field( "description" ).boost( 1.0f )
+                        .matching( searchText ) )
+                .highlighter( f -> f.unified()
+                        .tag( "<strong>", "</strong>")
+                        .numberOfFragments( 1 )
+                        .fragmentSize(256)
+                        .noMatchSize(256) )
+                .sort( f -> f.score().then().field( "title_sort" ) )
+                .fetch( page * PAGE_SIZE, PAGE_SIZE);
+
+        return new SearchResultDto<>( searchResult.hits(), searchResult.total().hitCount() );
     }
 }
