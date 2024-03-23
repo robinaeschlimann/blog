@@ -2,7 +2,6 @@ package ch.hftm.service;
 
 import ch.hftm.control.dto.BlogDto;
 import ch.hftm.control.dto.BlogDtoHighlight;
-import ch.hftm.control.dto.BlogDtoSearchWrapper;
 import ch.hftm.control.dto.SearchResultDto;
 import ch.hftm.model.Blog;
 import ch.hftm.model.IBlog;
@@ -79,7 +78,7 @@ public class BlogService {
     }
 
     @Transactional
-    public BlogDtoSearchWrapper searchBlogs(String searchText, int page)
+    public SearchResultDto<BlogDto> searchBlogs(String searchText, int page)
     {
         var searchResult = searchSession.search( Blog.class )
                 .where( f -> f.simpleQueryString()
@@ -89,12 +88,9 @@ public class BlogService {
                 .sort( f -> f.score().then().field( "title_sort" ) )
                 .fetch( page * PAGE_SIZE, PAGE_SIZE);
 
-        return BlogDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )
-                .searchText( searchText )
-                .blogs( searchResult.hits().stream()
-                        .map( BlogDto::toDto )
-                        .toList() )
-                .build();
+        return new SearchResultDto<>( searchResult.hits().stream()
+                .map( BlogDto::toDto )
+                .toList(), searchResult.total().hitCount() );
     }
 
     @Transactional

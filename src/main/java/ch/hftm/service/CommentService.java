@@ -1,9 +1,6 @@
 package ch.hftm.service;
 
-import ch.hftm.control.dto.BlogDto;
-import ch.hftm.control.dto.BlogDtoSearchWrapper;
-import ch.hftm.control.dto.CommentDto;
-import ch.hftm.control.dto.CommentDtoSearchWrapper;
+import ch.hftm.control.dto.*;
 import ch.hftm.model.Blog;
 import ch.hftm.model.Comment;
 import ch.hftm.repository.BlogRepository;
@@ -58,7 +55,7 @@ public class CommentService
     }
 
     @Transactional
-    public CommentDtoSearchWrapper searchComments(String searchText, int page)
+    public SearchResultDto<CommentDto> searchComments(String searchText, int page)
     {
         var searchResult = searchSession.search( Comment.class )
                 .where( f -> f.simpleQueryString()
@@ -67,11 +64,9 @@ public class CommentService
                 .sort( SearchSortFactory::score )
                 .fetch( page * PAGE_SIZE, PAGE_SIZE );
 
-        return CommentDtoSearchWrapper.builder().resultCount( searchResult.total().hitCount() )
-                .searchText( searchText )
-                .comments( searchResult.hits().stream()
-                        .map( CommentDto::toDto )
-                        .toList() )
-                .build();
+        return new SearchResultDto<>( searchResult.hits().stream()
+                .map( CommentDto::toDto )
+                .toList(),
+                searchResult.total().hitCount() );
     }
 }

@@ -1,10 +1,8 @@
 package ch.hftm;
 
 import ch.hftm.control.dto.CommentDto;
-import ch.hftm.control.dto.CommentDtoSearchWrapper;
-import ch.hftm.model.Comment;
+import ch.hftm.control.dto.SearchResultDto;
 import ch.hftm.service.CommentService;
-import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -46,7 +44,7 @@ public class CommentResource
     @Path( "/search" )
     @Produces( "application/json" )
     @Operation( description = "Search for comments")
-    public CommentDtoSearchWrapper searchComments(@QueryParam("searchText") String searchText, @QueryParam("page") int page )
+    public SearchResultDto<CommentDto> searchComments(@QueryParam("searchText") String searchText, @QueryParam("page") int page )
     {
         return service.searchComments( searchText, page );
     }
