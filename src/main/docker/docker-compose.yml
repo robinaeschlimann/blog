@@ -62,7 +62,7 @@ services:
       - redpanda-0
   blog-backend:
     container_name: blog-backend
-    image: ghcr.io/robin/blogbackend:latest
+    image: ghcr.io/robinaeschlimann/blog-backend-ra:latest
     networks:
       - redpanda_network
     ports:
