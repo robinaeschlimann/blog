@@ -77,7 +77,6 @@ public class BlogResource
     @Operation( description = "Add a new blog")
     @RequestBody( description = "The blog to add", required = true )
     @APIResponse( responseCode = "201", description = "Blog created")
-//    @RolesAllowed("create-blog")
     public Response addBlog( @Valid BlogDto blog ) throws URISyntaxException
     {
         var blogId = this.service.addBlog( blog );
@@ -95,7 +94,6 @@ public class BlogResource
     @PUT
     @Operation( description = "Update an existing blog")
     @RequestBody( description = "The blog to update", required = true )
-//    @RolesAllowed("create-blog")
     public Response updateBlog( @Valid BlogDto blog )
     {
         this.service.updateBlog( blog );

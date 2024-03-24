@@ -12,15 +12,10 @@ public class AnalysisConfigurer implements ElasticsearchAnalysisConfigurer
     public void configure(ElasticsearchAnalysisConfigurationContext context)
     {
 
-        context.analyzer( "titleAnalyzer" )
+        context.analyzer( "title" )
                 .custom()
                 .tokenizer( "standard" )
                 .tokenFilters( "lowercase", "asciifolding" );
-
-        /*context.tokenFilter( "autocomplete_edge_ngram" )
-                .type( "edge_ngram" )
-                .param( "min_gram", 1 )
-                .param( "max_gram", 10 );*/
 
         context.normalizer( "sort" ).custom()
                 .tokenFilters( "lowercase", "asciifolding" );

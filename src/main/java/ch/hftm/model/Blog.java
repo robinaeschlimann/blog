@@ -22,12 +22,12 @@ import java.util.List;
 @Indexed
 public class Blog implements IBlog {
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
     @Size(min = 3, max = 50)
     @FullTextField(analyzer = "german", projectable = Projectable.YES)
-    @FullTextField(name = "title_title", analyzer = "titleAnalyzer")
+    @FullTextField(name = "title_title", analyzer = "title")
     @KeywordField( name = "title_sort", normalizer = "sort", sortable = Sortable.YES)
     private String title;
 

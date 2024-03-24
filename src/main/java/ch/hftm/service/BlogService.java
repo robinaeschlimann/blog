@@ -19,15 +19,13 @@ import java.util.stream.Collectors;
 @Dependent
 public class BlogService {
     public static final int PAGE_SIZE = 10;
+    public static final float BOOST_TITLE = 6.0f;
+    public static final float BOOST_DESCRIPTION = 1.0f;
     @Inject
     BlogRepository blogRepository;
 
     @Inject
     SearchSession searchSession;
-
-//    @Inject
-//    @Channel("blog")
-//    Emitter<BlogMessage> emitter;
 
     @Inject
     Logger logger;
@@ -45,7 +43,9 @@ public class BlogService {
     public long addBlog(BlogDto blogDto) {
         logger.info("Adding blog " + blogDto.getTitle());
 
-        var blog = BlogDto.toBlog( blogDto );
+        var blog = new Blog();
+        blog.setTitle(blogDto.getTitle());
+        blog.setDescription(blogDto.getDescription());
 
         blogRepository.persist(blog);
 
@@ -82,8 +82,8 @@ public class BlogService {
     {
         var searchResult = searchSession.search( Blog.class )
                 .where( f -> f.simpleQueryString()
-                        .field( "title" ).boost( 6.0f )
-                        .field( "description" ).boost( 1.0f )
+                        .field( "title" ).boost( BOOST_TITLE )
+                        .field( "description" ).boost( BOOST_DESCRIPTION )
                         .matching( searchText ) )
                 .sort( f -> f.score().then().field( "title_sort" ) )
                 .fetch( page * PAGE_SIZE, PAGE_SIZE);
@@ -99,8 +99,8 @@ public class BlogService {
         var searchResult = searchSession.search( Blog.class )
                 .select( BlogDtoHighlight.class )
                 .where( f -> f.simpleQueryString()
-                        .field( "title" ).boost( 6.0f )
-                        .field( "description" ).boost( 1.0f )
+                        .field( "title" ).boost(BOOST_TITLE)
+                        .field( "description" ).boost(BOOST_DESCRIPTION)
                         .matching( searchText ) )
                 .highlighter( f -> f.unified()
                         .tag( "<strong>", "</strong>")
