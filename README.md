@@ -5,7 +5,11 @@ Auch eine Suche wurde mit Hibernate Search eingebaut. Diese kann über eine eige
 
 ## Services
 
+Folgende Services sind in diesem Projekt vorhanden:
 
+![Architektur.png](readme-images%2FArchitektur.png)
+
+Diese werden mit dem Docker-Compose-File gestartet (siehe nächster Abschnitt).
 
 ## Applikation im Prod-Modus starten
 Um die Applikation mit allen Services im Prod-Modus zu starten, kann das docker-compose.yml im src/main/docker Ordner verwendet werden. Dieses kann man herunterladen und danach starten: 
